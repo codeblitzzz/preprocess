@@ -11,7 +11,7 @@ from pypdf import PdfReader, PdfWriter
 pytesseract.pytesseract.tesseract_cmd = r"/usr/bin/tesseract"
 input_pdf = "HiLabsAIQuest_ContractsAI/Contracts/TN/TN_Contract1_Redacted.pdf"
 cropped_pdf = "TN_Contract1_nofowoter.pdf"  # intermediate PDF
-output_md = "outputs/parsed/TN_Contract1_Redacted_nofooter.md"
+output_md = "outputs/TN_Contract1_Redacted_nofooter.md"
 MAX_CORES = 6
 FOOTER_HEIGHT = 60  # points or pixels to skip from bottom
 
@@ -137,7 +137,7 @@ def main():
                                    first_page=pages_for_ocr[0]+1,
                                    last_page=pages_for_ocr[-1]+1)
 
-        args_list = [(pages_for_ocr[i], images[i], FOOTER_HEIGHT) for i in range(len(pages_for_ocr))]
+        args_list = [(pages_for_ocr[i], images[pages_for_ocr[i]], FOOTER_HEIGHT) for i in range(len(pages_for_ocr))]
 
         with concurrent.futures.ProcessPoolExecutor(max_workers=num_cores) as executor:
             results = list(executor.map(ocr_for_page, args_list))
